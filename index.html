@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sirenia Systems | Biomimetic Ocean Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#04080f;--bg2:#0b1120;--surface:#111b2e;--surface2:#162035;
+      --border:#1c2d4a;--border-glow:#2a4a7a;
+      --accent:#38bdf8;--accent2:#0ea5e9;--accent-dim:#1e6a9a;
+      --cyan:#22d3ee;--teal:#2dd4bf;--sky:#7dd3fc;
+      --text:#cbd5e1;--text-dim:#64748b;--text-bright:#f1f5f9;--white:#fff;
+      --gold:#fbbf24;--green:#34d399;--rose:#fb7185;--purple:#a78bfa;--orange:#fb923c;--blue:#60a5fa;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;overflow-x:hidden}
+    h1,h2,h3,h4{color:var(--text-bright)}
+    .serif{font-family:'DM Serif Display',Georgia,serif}
+    .mono{font-family:'JetBrains Mono',monospace}
+    a{color:var(--accent);text-decoration:none}a:hover{color:var(--cyan)}
+
+    /* ─── Nav ─── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,8,15,.92);backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid rgba(28,45,74,.5)}
+    .nav-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem}
+    .nav-brand{font-weight:700;font-size:.95rem;letter-spacing:2px;text-transform:uppercase}
+    .nav-brand span{color:var(--accent)}.nav-brand em{color:var(--text-dim);font-style:normal;font-weight:400}
+    .nav-links{display:flex;gap:1.75rem;list-style:none}
+    .nav-links a{color:var(--text-dim);font-size:.82rem;font-weight:500;letter-spacing:.5px;transition:color .2s}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent)}
+    @media(max-width:900px){.nav-links{display:none}}
+
+    /* ─── Hero ─── */
+    .hero{min-height:100vh;display:flex;align-items:center;padding:7rem 2rem 5rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:
+      radial-gradient(ellipse 60% 50% at 70% 40%,rgba(56,189,248,.07) 0%,transparent 70%),
+      radial-gradient(ellipse 40% 40% at 25% 65%,rgba(34,211,238,.04) 0%,transparent 70%),
+      radial-gradient(ellipse 30% 30% at 50% 20%,rgba(167,139,250,.03) 0%,transparent 60%);pointer-events:none}
+    .hero-grid{max-width:1400px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:center}
+    @media(max-width:960px){.hero-grid{grid-template-columns:1fr;text-align:center}}
+    .hero-tag{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:1.75rem}
+    .hero-tag::before{content:'';width:36px;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+    .hero h1{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2.6rem,5vw,4.2rem);line-height:1.12;margin-bottom:1.5rem}
+    .hero h1 .hl{background:linear-gradient(135deg,var(--accent),var(--cyan),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-lead{font-size:1.05rem;color:var(--text-dim);max-width:560px;line-height:1.9}
+    @media(max-width:960px){.hero-lead{margin:0 auto}}
+    .hero-visual{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 0 0 1px rgba(56,189,248,.05),0 40px 80px -20px rgba(0,0,0,.6)}
+    .hero-visual img{width:100%;display:block}
+    .hero-visual .overlay-badge{position:absolute;bottom:1rem;left:1rem;background:rgba(4,8,15,.88);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:8px;padding:.55rem 1rem;font-size:.72rem;color:var(--text-dim)}
+    .overlay-badge strong{color:var(--accent)}
+
+    /* ─── Section ─── */
+    .section{max-width:1400px;margin:0 auto;padding:7rem 2rem}
+    .section-sm{max-width:900px}
+    .section-label{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--accent-dim);margin-bottom:.75rem}
+    .section-title{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.8rem,3.2vw,2.8rem);margin-bottom:1rem}
+    .section-desc{color:var(--text-dim);font-size:1rem;max-width:660px;line-height:1.85}
+    .divider{border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border) 15%,var(--border) 85%,transparent);margin:0}
+
+    /* ─── Metrics ─── */
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border-radius:14px;overflow:hidden;margin:3rem 0}
+    .metric{background:var(--surface);padding:2rem 1.5rem;text-align:center}
+    .metric-value{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;margin-bottom:.3rem}
+    .metric-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim)}
+
+    /* ─── Panel ─── */
+    .panel{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin:4rem 0}
+    .panel.flip{direction:rtl}.panel.flip>*{direction:ltr}
+    @media(max-width:900px){.panel,.panel.flip{grid-template-columns:1fr}}
+    .panel-text h3{font-size:1.3rem;font-weight:600;margin-bottom:1rem}
+    .panel-text p{color:var(--text-dim);font-size:.94rem;margin-bottom:1.2rem}
+
+    /* ─── Figures ─── */
+    .fig{border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface);transition:box-shadow .3s}
+    .fig:hover{box-shadow:0 0 0 1px var(--border-glow),0 20px 50px -15px rgba(0,0,0,.4)}
+    .fig img{width:100%;display:block}
+    .fig-cap{padding:1rem 1.25rem;font-size:.88rem;color:var(--text);border-top:1px solid var(--border);line-height:1.65;background:var(--surface2)}
+    .bleed{margin:3rem 0;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 16px 50px -12px rgba(0,0,0,.35)}
+    .bleed img{width:100%;display:block}
+
+    /* ─── Equations ─── */
+    .eq{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent-dim);border-radius:10px;padding:1.2rem 1.75rem;margin:1.2rem 0;overflow-x:auto}
+    .eq-tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--text-dim);margin-bottom:.55rem}
+    .eq-expr{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--accent);line-height:1.65}
+    .eq-note{font-size:.82rem;color:var(--text-dim);margin-top:.55rem;font-style:italic}
+
+    /* ─── Tables ─── */
+    .dtable{width:100%;border-collapse:collapse;font-size:.86rem;margin:1.5rem 0}
+    .dtable th,.dtable td{padding:.7rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+    .dtable thead th{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);background:var(--bg2)}
+    .dtable td:first-child{color:var(--text-bright);font-weight:500}
+    .dtable .val{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+    .dtable .src{color:var(--text-dim);font-size:.78rem}
+    .dtable tr:hover td{background:rgba(56,189,248,.03)}
+
+    /* ─── Cards ─── */
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(56,189,248,.06)}
+    .card img{width:100%;display:block}
+    .card-body{padding:1.5rem}
+    .card-body h4{font-size:1.02rem;font-weight:600;margin-bottom:.55rem}
+    .card-body p{font-size:.86rem;color:var(--text-dim)}
+
+    /* ─── Badges ─── */
+    .badge{display:inline-block;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:.25rem .65rem;border-radius:4px;margin-right:.4rem;margin-bottom:.5rem}
+    .badge-blue{background:rgba(96,165,250,.12);color:var(--blue)}
+    .badge-teal{background:rgba(45,212,191,.12);color:var(--teal)}
+    .badge-purple{background:rgba(167,139,250,.12);color:var(--purple)}
+    .badge-gold{background:rgba(251,191,36,.12);color:var(--gold)}
+    .badge-rose{background:rgba(251,113,133,.12);color:var(--rose)}
+    .badge-cyan{background:rgba(34,211,238,.12);color:var(--cyan)}
+    .badge-green{background:rgba(52,211,153,.12);color:var(--green)}
+    .badge-orange{background:rgba(251,146,60,.12);color:var(--orange)}
+
+    /* ─── Callout ─── */
+    .callout{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.75rem 2rem;margin:2rem 0}
+    .callout-title{font-size:.92rem;font-weight:600;color:var(--text-bright);margin-bottom:.55rem}
+    .callout p{color:var(--text-dim);font-size:.88rem;margin-bottom:.5rem}
+    .callout.accent{border-left:3px solid var(--accent)}
+    .callout.gold{border-left:3px solid var(--gold)}
+    .callout.green{border-left:3px solid var(--green)}
+    .callout.rose{border-left:3px solid var(--rose)}
+    .callout.purple{border-left:3px solid var(--purple)}
+
+    /* ─── Grids ─── */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
+    @media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+    /* ─── Color ─── */
+    .c-accent{color:var(--accent)}.c-cyan{color:var(--cyan)}.c-teal{color:var(--teal)}
+    .c-gold{color:var(--gold)}.c-green{color:var(--green)}.c-rose{color:var(--rose)}
+    .c-purple{color:var(--purple)}.c-blue{color:var(--blue)}.c-orange{color:var(--orange)}
+
+    /* ─── Invert light-background figures for dark theme ─── */
+    img[src*="dugong_anatomy"],
+    img[src*="swimming_kinematics"],
+    img[src*="kinematic_deformation"],
+    img[src*="BIAUV_swimming_animation"],
+    img[src*="manatee_cfd_flow"],
+    img[src*="BIAUV_strouhal_efficiency"],
+    img[src*="BIAUV_hydro_annotated"],
+    img[src*="tailUndulation"],
+    img[src*="lift_time_series"],
+    img[src*="bending_torque"],
+    img[src*="joint_angle"],
+    img[src*="efficiency_cost"],
+    img[src*="BIAUV_velocity"],
+    img[src*="spine_geometry"],
+    img[src*="DA_3d_scatter"]{filter:invert(.88) hue-rotate(180deg);border-radius:8px}
+
+    /* ─── 3D Embed ─── */
+    .model-embed{border-radius:14px;overflow:hidden;border:1px solid var(--border);height:600px;margin:3rem 0;box-shadow:0 16px 50px -12px rgba(0,0,0,.35)}
+    .model-embed iframe{width:100%;height:100%;border:none}
+
+    /* ─── Anatomy Layer Stack ─── */
+    .anatomy-stack{position:relative;margin:3rem 0}
+    .anatomy-stack .layer-card{border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:1.5rem;transition:transform .3s,box-shadow .3s}
+    .anatomy-stack .layer-card:hover{transform:scale(1.01);box-shadow:0 20px 60px -15px rgba(56,189,248,.1)}
+    .anatomy-stack .layer-card img{width:100%;display:block}
+    .layer-label{position:absolute;top:1rem;left:1rem;background:rgba(4,8,15,.9);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:6px;padding:.4rem .8rem;font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+
+    /* ─── Muscle Encyclopedia ─── */
+    .muscle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:2rem 0}
+    .muscle-entry{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;transition:border-color .3s}
+    .muscle-entry:hover{border-color:var(--border-glow)}
+    .muscle-entry h4{font-size:.88rem;font-weight:600;margin-bottom:.4rem}
+    .muscle-entry .abbrev{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent);margin-bottom:.4rem}
+    .muscle-entry p{font-size:.8rem;color:var(--text-dim);line-height:1.6}
+    .muscle-entry .tag{display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:.15rem .5rem;border-radius:3px;margin-top:.5rem}
+
+    /* ─── Footer ─── */
+    footer{border-top:1px solid var(--border);padding:4rem 2rem}
+    .footer-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+    .footer-brand{font-weight:700;font-size:.9rem;letter-spacing:1.5px}
+    .footer-brand span{color:var(--accent)}
+    .footer-text{color:var(--text-dim);font-size:.8rem}
+
+    /* ─── Separator glow ─── */
+    .glow-divider{border:none;height:2px;background:linear-gradient(90deg,transparent,var(--accent-dim) 20%,var(--accent) 50%,var(--accent-dim) 80%,transparent);margin:0;opacity:.4}
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAV
+     ════════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand"><span>Sirenia</span> Systems <em>&mdash; Biomimetic Ocean Engineering</em></div>
+    <ul class="nav-links">
+      <li><a href="#anatomy">Comparative Anatomy</a></li>
+      <li><a href="#muscle-bible">Muscle Encyclopedia</a></li>
+      <li><a href="#ocean-engineering">Ocean Engineering</a></li>
+      <li><a href="#hydrodynamics">Hydrodynamics</a></li>
+      <li><a href="#digital-twin">Digital Twin</a></li>
+      <li><a href="portfolio.html">Full Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">Biomimetic Underwater Robotics</div>
+      <h1 class="serif">
+        Engineering the<br>
+        <span class="hl">Sirenian Musculoskeletal</span><br>
+        System
+      </h1>
+      <p class="hero-lead">
+        Sirenia Systems reverse-engineers the musculoskeletal architecture of the order
+        Sirenia &mdash; dugong and manatee &mdash; to build autonomous underwater vehicles
+        that replicate biological locomotion at the level of individual muscle fibers,
+        vertebral geometry, and hydrodynamic force production.
+      </p>
+      <div style="margin-top:2rem;">
+        <span class="badge badge-cyan">132 Muscles</span>
+        <span class="badge badge-blue">46 Bones</span>
+        <span class="badge badge-purple">4 Tissue Types</span>
+        <span class="badge badge-teal">Subcarangiform</span>
+        <span class="badge badge-gold">Dorso-Ventral</span>
+        <span class="badge badge-rose">10 Prototypes</span>
+      </div>
+    </div>
+    <div>
+      <div class="hero-visual">
+        <img src="dimensional_analysis/showcase/Screenshot 2026-04-09 at 9.09.57 AM.png"
+             alt="Mechanatee BIAUV full musculoskeletal system — 132 muscles, 46 bones, 4 tissue types">
+        <div class="overlay-badge">
+          <strong>132 muscles &middot; 46 bones &middot; 4 tissues</strong> &mdash; Hybrid sirenian reconstruction
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     COMPARATIVE SIRENIAN ANATOMY
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="anatomy">
+  <div class="section-label">Comparative Sirenian Anatomy</div>
+  <h2 class="section-title">Dugong &amp; Manatee &mdash; Layered Anatomical Reconstruction</h2>
+  <p class="section-desc">
+    The Mechanatee uses a hybrid sirenian reference model: musculature from the dugong
+    (<em>Dugong dugon</em>, Domning 1977) mapped onto the vertebral column and fluke geometry of
+    the Florida manatee (<em>Trichechus manatus latirostris</em>). Both species share the same
+    fundamental locomotor architecture &mdash; dorso-ventral undulation driven by antagonistic
+    epaxial/hypaxial muscle chains &mdash; but diverge in caudal segment count, fluke morphology,
+    and shoulder architecture.
+  </p>
+
+  <!-- Key differences callout -->
+  <div class="grid-2" style="margin-top:2rem;">
+    <div class="callout accent" style="margin:0;">
+      <div class="callout-title">Dugong (<em>Dugong dugon</em>)</div>
+      <p>
+        <strong>Fluke:</strong> Lunate (crescent-shaped), cetacean-like. Higher aspect ratio.<br>
+        <strong>Swimming:</strong> More specialized, greater endurance. Open-water habitat.<br>
+        <strong>Musculature:</strong> More developed hypaxial system. Separate SVL/SVM divisions.
+        "Fluke elevator" tendons present. Greater transverse flexibility.<br>
+        <strong>Source:</strong> Domning (1977), <em>Smithsonian Contributions to Zoology</em> No. 226.
+        57 pages, 54 figures, 2 tables. The most complete published sirenian myology.
+      </p>
+    </div>
+    <div class="callout" style="border-left:3px solid var(--teal); margin:0;">
+      <div class="callout-title" style="color:var(--teal);">Manatee (<em>Trichechus manatus</em>)</div>
+      <p>
+        <strong>Fluke:</strong> Spatulate (paddle-shaped). Lower aspect ratio. Thrust via pitching.<br>
+        <strong>Swimming:</strong> Less specialized, less endurance. Protected-water habitat.<br>
+        <strong>Musculature:</strong> Transversospinalis better developed relative to longissimus.
+        Shorter neural spines, larger metapophyses, longer centra. Less anatomical specialization
+        for swimming &mdash; but more maneuverable in restricted waters.<br>
+        <strong>Source:</strong> Murie (1872, 1880), Kojeszewski &amp; Fish (2007).
+      </p>
+    </div>
+  </div>
+
+  <!-- ── ANATOMY LAYOVER — MANATEE (five-panel) ── -->
+  <h3 style="margin-top:3.5rem; margin-bottom:1rem;">Manatee &mdash; Five-Panel Anatomical Layover</h3>
+  <p style="color:var(--text-dim); margin-bottom:1rem;">
+    Five progressive layers from outer envelope to skeleton. The envelope (panel 1) is
+    <strong>regenerated at runtime</strong> from the current muscle and skeletal reconstruction.
+    Nervous system routed using comparative cetacean and sirenian neuroanatomy
+    (Reep, Morgane, Marshall, Pabst); musculature follows the dugong-derived Domning (1977) map;
+    skeleton is the real manatee STL.
+  </p>
+  <div class="bleed" style="margin-bottom:.5rem;">
+    <img src="dimensional_analysis/manatee_anatomy_layover.png"
+         alt="Mechanatee five-panel anatomical layover: envelope, nervous system, vascular, musculature, skeleton">
+  </div>
+  <p style="color:var(--text-dim); font-size:.8rem; font-style:italic; margin-bottom:3rem;">
+    Generated by <span class="mono">manatee_anatomy_layover.py</span>. Hybrid sirenian model &mdash;
+    muscles are dugong-derived (Domning 1977), skeleton is manatee.
+  </p>
+
+  <!-- ── DUGONG BODY PROFILE — full anatomy from Domning 1977 ── -->
+  <h3 style="margin-bottom:1rem;">Dugong &mdash; Full-Body Musculature (Domning 1977)</h3>
+  <p style="color:var(--text-dim); margin-bottom:1rem;">
+    The definitive anatomical reference for sirenian musculature. Skin thickness distribution,
+    lateral dermal muscles, and dorsal superficial/deep layer dissection of <em>Dugong dugon</em>.
+  </p>
+  <div class="fig" style="margin-bottom:2rem;">
+    <img src="dimensional_analysis/dugong_anatomy/dugong_body_profile.png"
+         alt="Dugong full-body profile: skin thickness, lateral muscles, dorsal muscles — Domning 1977">
+    <div class="fig-cap">
+      <strong>Domning (1977), Figures 1&ndash;3.</strong>
+      Top: Skin thickness along dorsal (D), lateral (L), and ventral (V) midlines (8&ndash;18 mm range).
+      Middle: Lateral view &mdash; dermal muscles and superficial aponeuroses with CuT, SpC, and platysma divisions.
+      Bottom: Dorsal view &mdash; superficial layer (right side), deeper layer with splenius, longissimus capitis,
+      and shoulder muscles removed (left side).
+    </div>
+  </div>
+
+  <!-- ── DUGONG DISSECTION PLATES ── -->
+  <h3 style="margin-bottom:1rem;">Dugong Caudal Musculature &mdash; Progressive Dissection</h3>
+  <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+    Anatomical plates from Domning (1977) revealing the layered musculature of the posterior
+    trunk and tail through progressive dissection &mdash; from superficial skin muscles down to the
+    deepest vertebral attachments. Each layer informs actuator placement in the Mechanatee.
+  </p>
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="fig">
+      <img src="dimensional_analysis/dugong_anatomy/dugong_page-59.png"
+           alt="Dugong caudal musculature — Figures 49 and 50, lateral dissection">
+      <div class="fig-cap">
+        <strong>Figs. 49 &amp; 50</strong> &mdash; Superficial layer: IlT, IntE, LnD, Intr, OAE, RA, CoVe/CoVu,
+        Isc, SVL exposed. Second layer: deep Intr bundles, OAI, TrA, SVL triangular cross-section.
+      </div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/dugong_anatomy/dugong_page-60.png"
+           alt="Dugong deep ventral muscles — Figures 51&ndash;54">
+      <div class="fig-cap">
+        <strong>Figs. 51&ndash;54</strong> &mdash; Deep musculature: SVL, SVM, FH, chevron bones (ch<sub>5</sub>&ndash;ch<sub>12</sub>).
+        Pelvic attachments: Isc, RA, CoVe, Intr<sub>d</sub>, ReI on lateral and medial pelvis views.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Dissection-to-Actuator mapping ── -->
+  <div class="callout accent">
+    <div class="callout-title">Dissection-to-Actuator Layer Mapping</div>
+    <table class="dtable" style="margin:.75rem 0 0;">
+      <thead><tr><th>Layer</th><th>Biological Muscles (Domning Figs. 49&ndash;54)</th><th>Mechanatee Actuator Role</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1 &mdash; Superficial</strong></td>
+          <td>Cutaneus trunci (CuT), intercostales externi (IntE), obliquus abd. ext. (OAE)</td>
+          <td>Skin-mounted strain sensors; no active actuation</td>
+        </tr>
+        <tr>
+          <td><strong>2 &mdash; Intermediate</strong></td>
+          <td>Longissimus dorsi (LnD), rectus abdominis (RA), obliquus abd. int. (OAI), SVL</td>
+          <td>Primary dorsal/ventral antagonistic actuator pairs (HASEL or SMA)</td>
+        </tr>
+        <tr>
+          <td><strong>3 &mdash; Deep</strong></td>
+          <td>SVL+SVM (deep), flexor haemalis (FH), Intr<sub>d</sub>, transversus abdominis (TrA)</td>
+          <td>Secondary actuators for fine amplitude and lateral steering</td>
+        </tr>
+        <tr>
+          <td><strong>4 &mdash; Pelvic Origin</strong></td>
+          <td>Ischiococcygeus (Isc), coccygeus ventralis/dorsalis, retractor ischii (ReI)</td>
+          <td>Proximal anchor actuators; baseline tail tension and posture</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     MUSCULOSKELETAL SHOWCASE
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="showcase">
+  <div class="section-label">3D Reconstruction</div>
+  <h2 class="section-title">Musculoskeletal System &mdash; Complete Digital Reconstruction</h2>
+  <p class="section-desc">
+    132 individually modeled muscles, 46 skeletal elements, and 4 tissue types mapped from
+    Domning (1977) dugong dissection and Reidenberg (2018) manatee plates onto a unified
+    3D musculoskeletal framework.
+  </p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-value c-accent">132</div>
+      <div class="metric-label">Muscles Modeled</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-cyan">46</div>
+      <div class="metric-label">Skeletal Elements</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-teal">4</div>
+      <div class="metric-label">Tissue Types</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-gold">11</div>
+      <div class="metric-label">Functional Groups</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-purple">25,200</div>
+      <div class="metric-label">Mesh Points</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-green">50</div>
+      <div class="metric-label">Vertebrae</div>
+    </div>
+  </div>
+
+  <!-- Showcase images -->
+  <div class="bleed" style="margin-bottom:.5rem;">
+    <img src="dimensional_analysis/showcase/132muscles_46bones_4tissues.png"
+         alt="Full musculoskeletal reconstruction — 132 muscles, 46 bones, 4 tissue types">
+  </div>
+  <p style="color:var(--text-dim); font-size:.82rem; text-align:center; margin-bottom:3rem;">
+    <strong>Full musculoskeletal reconstruction.</strong> Semi-transparent envelope with color-coded
+    functional muscle groups. Epaxial (red), hypaxial (blue), lateral (cyan), abdominal (green),
+    shoulder/back (orange), flipper/pectoral (purple), superficial/subcutaneous (pink).
+  </p>
+
+  <div class="grid-2">
+    <div class="fig">
+      <img src="dimensional_analysis/showcase/shoulder and back.png"
+           alt="Shoulder and back musculature detail">
+      <div class="fig-cap">
+        <strong>Shoulder &amp; back detail.</strong> Epaxial chain (LnD, IlT, transversospinalis) with
+        rib cage, scapular muscles, and neural spine attachments. Green: abdominal core.
+        Pink: superficial sheet (CuT). The full dorsal extensor system that drives the upstroke.
+      </div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/showcase/flippper and pectroral.png"
+           alt="Flipper and pectoral musculature">
+      <div class="fig-cap">
+        <strong>Flipper &amp; pectoral detail.</strong> 30 forelimb muscles (15 per side) including
+        extrinsic shoulder group, intrinsic arm/forearm, and hand musculature.
+        Position control system &mdash; not propulsion (Reidenberg 2018).
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:1.5rem;">
+    <div class="fig">
+      <img src="dimensional_analysis/showcase/white lines between the two flippers.png"
+           alt="Dorsal view showing bilateral musculature and nerve/vessel pathways">
+      <div class="fig-cap">
+        <strong>Dorsal view.</strong> Bilateral symmetry of the muscle system with nerve/vessel
+        pathways (white traces) running between the pectoral flippers. 50 vertebrae
+        visible through the semi-transparent envelope.
+      </div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/showcase/Screenshot 2026-04-08 at 11.38.00 PM.png"
+           alt="Posterior view of musculoskeletal system with muscle group toggles">
+      <div class="fig-cap">
+        <strong>Posterior (caudal) view.</strong> Frontal cross-section perspective showing
+        the concentric layering of muscle groups around the vertebral column &mdash; the same
+        architecture that the HASEL actuator array replicates.
+      </div>
+    </div>
+  </div>
+
+  <!-- Beauty renders -->
+  <h3 style="margin-top:3.5rem; margin-bottom:1.5rem;">Exterior Geometry &amp; Swim Sequence</h3>
+  <div class="grid-2">
+    <div class="fig">
+      <img src="dimensional_analysis/swimming_manatee_render/mechanatee_textured_beauty.png"
+           alt="Mechanatee textured beauty render">
+      <div class="fig-cap">
+        <strong>Textured beauty render.</strong> Dragon Skin silicone outer body with Sharklet-inspired
+        antifouling microtexture. Visual indistinguishability target: juvenile manatee at 5 m
+        in turbid water.
+      </div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/swimming_manatee_render/mechanatee_swim_sequence.png"
+           alt="Eight-frame swim sequence">
+      <div class="fig-cap">
+        <strong>Eight-frame swim sequence.</strong> Body posture sampled across one full dorso-ventral
+        undulation cycle. Travelling-wave kinematics with quadratic amplitude envelope.
+      </div>
+    </div>
+  </div>
+
+  <div class="bleed" style="margin-top:1.5rem; margin-bottom:.5rem;">
+    <img src="dimensional_analysis/swimming_manatee_render/mechanatee_multi_view.png"
+         alt="Multi-view orthographic render">
+  </div>
+  <p style="color:var(--text-dim); font-size:.82rem; text-align:center; margin-bottom:2rem;">
+    <strong>Orthographic multi-view.</strong> Side, top, front, and 3/4 perspectives.
+  </p>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     MUSCLE BIBLE / ENCYCLOPEDIA
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="muscle-bible">
+  <div class="section-label">Domning (1977) &mdash; Smithsonian Contributions to Zoology No. 226</div>
+  <h2 class="section-title">Sirenian Muscle Encyclopedia</h2>
+  <p class="section-desc">
+    Complete myological reference for the order Sirenia, derived from Domning's dugong dissection
+    and cross-referenced with Murie (1872, 1880) manatee descriptions. 57 pages, 54 figures,
+    2 tables. Every muscle mapped to its Mechanatee actuator equivalent.
+  </p>
+
+  <div class="callout" style="border-left:4px solid var(--gold); margin-bottom:3rem;">
+    <div class="callout-title" style="color:var(--gold);">Anatomy Source Caveat &mdash; Read First</div>
+    <p>
+      Muscle nomenclature and fiber descriptions below follow the <strong>dugong</strong>
+      (<em>Dugong dugon</em>) dissection by Domning (1977). The <strong>skeleton and fluke</strong>
+      in the Mechanatee are <strong>manatee</strong> (<em>Trichechus manatus</em>). This is a
+      deliberate, disclosed hybrid &mdash; no equivalent peer-reviewed manatee musculature dissection
+      of comparable detail exists. Quantifying where dugong&rarr;manatee homology breaks down is
+      itself part of the research roadmap.
+    </p>
+  </div>
+
+  <!-- ═══ SWIMMING MUSCLES ═══ -->
+  <h3 style="margin-bottom:.5rem;">Swimming Muscles &mdash; The Propulsive System</h3>
+  <p style="color:var(--text-dim); margin-bottom:1.5rem; font-size:.92rem;">
+    "Sirenians can, apparently by contraction of diagonally opposite sacrococcygeus ventralis
+    lateralis and longissimus muscles, oscillate their tail fins about the long axis of their
+    bodies." &mdash; Domning (1977), p. 29. Forward motion is initiated by an <strong>upstroke</strong>.
+  </p>
+
+  <!-- UPSTROKE (Epaxial) -->
+  <div class="callout" style="border-left:4px solid #fb7185; margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:#fb7185;">Epaxial System &mdash; Upstroke (Dorsal Extension)</div>
+    <p style="margin-bottom:1rem;">
+      The epaxial muscles of the Sirenia are characterized by extensive fusion, obscuring most of
+      the divisions easily observed in land mammals. The extreme shortening of the neck, loss of hind
+      limbs, and fusion of trunk and tail regions creates a single continuous epaxial muscle mass from
+      occiput to tail tip.
+    </p>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <div class="abbrev">LnD</div>
+        <h4>M. longissimus dorsi</h4>
+        <p>
+          Principal epaxial mass. Continuous unit from atlas to end of tail. Fleshy and tendinous
+          on transverse process of atlas; at C<sub>6</sub> attachment fused with iliocostalis.
+          Origin: fleshy from dorsal sides of transverse processes, first thoracic back into flukes,
+          dorsolateral sides of neural arches from T<sub>1</sub> back, and dorsal sides of all ribs
+          inside their angles. Inserts via separate round tendons to aftermost caudals.
+        </p>
+        <div class="tag" style="background:rgba(251,113,133,.15);color:#fb7185;">Upstroke &mdash; Primary</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">SeC</div>
+        <h4>M. semispinalis capitis</h4>
+        <p>
+          Short, shallow longitudinal cleft on surface of muscle at about atlas level. Posteriorly
+          continuous with undifferentiated epaxial mass. Undifferentiated short muscle fascicles and
+          tendons spanning &le;4 vertebrae. Fleshy attachments to dorsal side of transverse process of atlas.
+        </p>
+        <div class="tag" style="background:rgba(251,113,133,.15);color:#fb7185;">Upstroke &mdash; Medial</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">IlT</div>
+        <h4>M. iliocostalis thoracis</h4>
+        <p>
+          Least developed of the epaxial systems. Single unit, no pelvis attachment. Long narrow band,
+          widest (5.5 cm) at 9th rib. Lateral to longissimus, covering ribs just distal to their angles.
+          Pinnate fiber bundles with overlapping tendons. Tendons with fibers insert on posterolateral
+          sides of ribs, 4&ndash;5 forward of origin.
+        </p>
+        <div class="tag" style="background:rgba(251,113,133,.15);color:#fb7185;">Upstroke &mdash; Lateral</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNSTROKE (Hypaxial) -->
+  <div class="callout" style="border-left:4px solid #38bdf8; margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:#38bdf8;">Hypaxial System &mdash; Downstroke (Ventral Flexion)</div>
+    <p style="margin-bottom:1rem;">
+      The large epaxial and hypaxial locomotor muscles are supplemented in the dugong by an unusual
+      development of the subcutaneous muscles (cutaneus trunci). This consists of a thick mass on the
+      underside of the tail, connected to the ischium by a separate "ischiococcygeus," continuous with
+      the abdominal sheet. "Its action is clearly to flex the tail." &mdash; Domning (1977), p. 29.
+    </p>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <div class="abbrev">SVL</div>
+        <h4>Sacrococcygeus ventralis lateralis</h4>
+        <p>
+          Primary downstroke muscle. Broad, triangular cross-section with aponeurosis.
+          From caudal transverse process tips and ribs 17&ndash;19. Deep to cutaneus trunci.
+          Originates from ventrolateral processes of caudal vertebrae.
+        </p>
+        <div class="tag" style="background:rgba(56,189,248,.15);color:#38bdf8;">Downstroke &mdash; Primary</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">SVM</div>
+        <h4>Sacrococcygeus ventralis medialis</h4>
+        <p>
+          Deep to SVL, from lateral sides of chevron bones. More oblique fiber arrangement.
+          Works in concert with SVL for powerful ventral flexion.
+        </p>
+        <div class="tag" style="background:rgba(56,189,248,.15);color:#38bdf8;">Downstroke &mdash; Deep</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">FH</div>
+        <h4>M. flexor haemalis</h4>
+        <p>
+          Along chevron bone tips, increasing posteriorly. Flexes the tail ventrally (downstroke).
+          Lever arm of ventral caudal flexor system. Attaches to hemal arches of caudal vertebrae.
+        </p>
+        <div class="tag" style="background:rgba(56,189,248,.15);color:#38bdf8;">Downstroke &mdash; Lever</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">Isc</div>
+        <h4>M. ischiococcygeus</h4>
+        <p>
+          Fleshy from ventromedial edge of ischium and distal end of ilium. Runs medially and
+          posteroventrally parallel to pelvis. In manatee attached to first two chevron bones.
+          Extends from ischium (pelvis) to tail via deep aponeurosis.
+        </p>
+        <div class="tag" style="background:rgba(56,189,248,.15);color:#38bdf8;">Downstroke &mdash; Pelvic</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">CuT</div>
+        <h4>Cutaneus trunci</h4>
+        <p>
+          Subcutaneous sheet from axilla to fluke base. Thick caudal mass unique to sirenians.
+          "Its action is clearly to flex the tail" (Domning 1977). In the manatee, the caudal
+          extension is much less developed. Dorsal fibers sweep up to mingle with
+          auricularis profundus.
+        </p>
+        <div class="tag" style="background:rgba(56,189,248,.15);color:#38bdf8;">Downstroke Assist</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">RA</div>
+        <h4>M. rectus abdominis</h4>
+        <p>
+          Ventral support along underside, sternum to ischium. Flexes spine for downstroke assistance.
+          Broad, flat muscle along ventral midline providing sustained ventral flexion force.
+        </p>
+        <div class="tag" style="background:rgba(52,211,153,.15);color:#34d399;">Downstroke Assist</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LATERAL + FINE CONTROL -->
+  <div class="callout" style="border-left:4px solid #06b6d4; margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:#06b6d4;">Lateral System &mdash; Steering &amp; Yaw Control</div>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <div class="abbrev">SDL</div>
+        <h4>Sacrococcygeus dorsalis lateralis</h4>
+        <p>
+          Lateral division of epaxial mass at transverse process tips. Produces lateral flexion
+          of caudal peduncle for yaw steering. Works with Intr for turning maneuvers.
+        </p>
+        <div class="tag" style="background:rgba(6,182,212,.15);color:#06b6d4;">Lateral &mdash; Yaw</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">Intr</div>
+        <h4>Intertransversarius coccygeus</h4>
+        <p>
+          Long fusiform muscle, 2nd lumbar to tail tip. Deep bundles (Intr<sub>d</sub>) between
+          individual transverse processes for fine tail adjustments. Both superficial and deep
+          divisions present. Essential for precise low-speed maneuvering.
+        </p>
+        <div class="tag" style="background:rgba(251,146,60,.15);color:#fb923c;">Fine Control</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">LaD</div>
+        <h4>M. latissimus dorsi</h4>
+        <p>
+          Broad, superficial. Wraps around dorsal side, fused posteriorly with CuT.
+          Swimming direction control and lateral trunk stabilization.
+        </p>
+        <div class="tag" style="background:rgba(251,146,60,.15);color:#fb923c;">Structural</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CORE + ABDOMINAL -->
+  <div class="callout" style="border-left:4px solid #a78bfa; margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:#a78bfa;">Core Stability &amp; Abdominal System</div>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <div class="abbrev">OAI</div>
+        <h4>Obliquus abdominis internus</h4>
+        <p>Trunk rotation and spine stabilization. Partially wraps tail. Deep to OAE.</p>
+        <div class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa;">Stabilization</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">OAE</div>
+        <h4>Obliquus abdominis externus</h4>
+        <p>Pinnate segments on ribs 3&ndash;19, directed posteroventrally. Core compression.</p>
+        <div class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa;">Stabilization</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">TrA</div>
+        <h4>Transversus abdominis</h4>
+        <p>Deepest abdominal layer. Compresses core, stabilizes spine. Ribs 3&ndash;19 to pelvis.</p>
+        <div class="tag" style="background:rgba(167,139,250,.15);color:#a78bfa;">Stabilization</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORELIMB -->
+  <div class="callout" style="border-left:4px solid #fb923c; margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:#fb923c;">Forelimb Musculature &mdash; Position Control, Not Propulsion</div>
+    <p style="margin-bottom:1rem;">
+      30 forelimb muscles (15 per side). Per Reidenberg (2018, <em>Encyclopedia of Marine Mammals</em>):
+      "These muscles are used by sirenians for slow ambulation along the riverbed, but are
+      <strong>not particularly strong</strong>&hellip; reduced in cetaceans as they use the flippers primarily for
+      <strong>adjusting swimming position and braking, but not propulsion</strong>."
+    </p>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <div class="abbrev">Trp / LaD / Rh</div>
+        <h4>Extrinsic Dorsal Group</h4>
+        <p>Trapezius, latissimus dorsi, rhomboideus. Dorsal thorax to scapula/humerus.
+           In dugong, serratus magnus is divided into separate anterior/posterior parts.</p>
+        <div class="tag" style="background:rgba(251,146,60,.15);color:#fb923c;">Shoulder</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">PMa / PMi / D</div>
+        <h4>Extrinsic Ventral + Shoulder</h4>
+        <p>Pectoralis major/minor, deltoid, supraspinatus, infraspinatus, teres major, subscapularis.
+           Manatee bicipital groove absent; no separate heads.</p>
+        <div class="tag" style="background:rgba(251,146,60,.15);color:#fb923c;">Shoulder</div>
+      </div>
+      <div class="muscle-entry">
+        <div class="abbrev">ECR / FCR / FDP</div>
+        <h4>Forearm &amp; Hand</h4>
+        <p>Extensors (ECR, ECU, EDC, EDQ), flexors (FCR, FCU, FDP, FDS), pronator teres,
+           palmaris longus, interossei, AbD V. Digits II&ndash;V present in both species.</p>
+        <div class="tag" style="background:rgba(251,146,60,.15);color:#fb923c;">Flipper</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRUCTURAL -->
+  <div class="callout" style="border-left:4px solid var(--gold); margin-bottom:1.5rem;">
+    <div class="callout-title" style="color:var(--gold);">Structural &amp; Sensory Elements</div>
+    <div class="muscle-grid">
+      <div class="muscle-entry">
+        <h4>Chevron Bones (ch)</h4>
+        <p>V-shaped bones on ventral side of caudal vertebrae. Protect blood vessels, serve as
+           FH and SVM attachment points. 9&ndash;13 per tail.</p>
+      </div>
+      <div class="muscle-entry">
+        <h4>Caudal Vertebrae (Ca)</h4>
+        <p>24&ndash;29 vertebrae. Central axis of movement. Ball-and-socket facet joints for
+           controlled pendulum-like oscillation.</p>
+      </div>
+      <div class="muscle-entry">
+        <h4>Diaphragm</h4>
+        <p>Unusually large, muscular, and horizontally oriented in sirenians. Functions in
+           buoyancy control as well as respiration. The manatee diaphragm is the most
+           horizontally positioned of any mammal.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full abbreviation table -->
+  <h3 style="margin-top:3rem; margin-bottom:1rem;">Complete Muscle Abbreviation Index</h3>
+  <div class="grid-2">
+    <table class="dtable">
+      <thead><tr><th>Abbrev.</th><th>Muscle</th><th>Group</th><th>Domning Fig.</th></tr></thead>
+      <tbody>
+        <tr><td class="val">LnD</td><td>Longissimus dorsi</td><td style="color:#fb7185;">Upstroke</td><td class="src">3, 22&ndash;24, 49&ndash;52</td></tr>
+        <tr><td class="val">IlT</td><td>Iliocostalis thoracis</td><td style="color:#fb7185;">Upstroke</td><td class="src">3, 22&ndash;24, 49</td></tr>
+        <tr><td class="val">SeC</td><td>Semispinalis capitis</td><td style="color:#fb7185;">Upstroke</td><td class="src">3, 12&ndash;15, 20&ndash;24</td></tr>
+        <tr><td class="val">FH</td><td>Flexor haemalis</td><td style="color:#38bdf8;">Downstroke</td><td class="src">51</td></tr>
+        <tr><td class="val">SVL</td><td>Sacrococcygeus vent. lat.</td><td style="color:#38bdf8;">Downstroke</td><td class="src">49&ndash;52</td></tr>
+        <tr><td class="val">SVM</td><td>Sacrococcygeus vent. med.</td><td style="color:#38bdf8;">Downstroke</td><td class="src">51</td></tr>
+        <tr><td class="val">Isc</td><td>Ischiococcygeus</td><td style="color:#38bdf8;">Downstroke</td><td class="src">52&ndash;54</td></tr>
+      </tbody>
+    </table>
+    <table class="dtable">
+      <thead><tr><th>Abbrev.</th><th>Muscle</th><th>Group</th><th>Domning Fig.</th></tr></thead>
+      <tbody>
+        <tr><td class="val">RA</td><td>Rectus abdominis</td><td style="color:#34d399;">Assist</td><td class="src">23, 24, 49&ndash;53</td></tr>
+        <tr><td class="val">CuT</td><td>Cutaneus trunci</td><td style="color:#34d399;">Assist</td><td class="src">2, 3, 49&ndash;52</td></tr>
+        <tr><td class="val">OAI</td><td>Obliquus abd. internus</td><td style="color:#a78bfa;">Stabilization</td><td class="src">34, 50, 52</td></tr>
+        <tr><td class="val">TrA</td><td>Transversus abdominis</td><td style="color:#a78bfa;">Stabilization</td><td class="src">50&ndash;54</td></tr>
+        <tr><td class="val">Intr</td><td>Intertransversarius</td><td style="color:#fb923c;">Fine control</td><td class="src">3, 49&ndash;53</td></tr>
+        <tr><td class="val">LaD</td><td>Latissimus dorsi</td><td style="color:#fb923c;">Structural</td><td class="src">22, 32, 46&ndash;47</td></tr>
+        <tr><td class="val">ReI</td><td>Retractor ischii</td><td style="color:#fb923c;">Structural</td><td class="src">53&ndash;54</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="color:var(--text-dim); font-size:.8rem; font-style:italic; margin-top:1rem;">
+    Source: Domning, D.P. (1977). "Observations on the myology of <em>Dugong dugon</em> (M&uuml;ller)."
+    <em>Smithsonian Contributions to Zoology</em>, No. 226. Cross-referenced with
+    Murie (1872, 1880) manatee descriptions and Reidenberg (2018) <em>Encyclopedia of Marine Mammals</em>.
+  </p>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     OCEAN ENGINEERING MATHEMATICS
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="ocean-engineering">
+  <div class="section-label">Ocean Engineering Mathematics</div>
+  <h2 class="section-title">The Physics of Biomimetic Underwater Locomotion</h2>
+  <p class="section-desc">
+    From Navier-Stokes to Lighthill, from Strouhal to coupled neural oscillators &mdash;
+    every equation governing the Mechanatee's hydrodynamic performance, derived from
+    first principles and validated against biological kinematic data.
+  </p>
+
+  <!-- ─── KINEMATICS ─── -->
+  <h3 style="margin-top:3rem; margin-bottom:1.5rem;">Swimming Kinematics &mdash; Progressive Wave Model</h3>
+  <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+    Manatee swimming is classified as subcarangiform: dorso-ventral undulation propagating as a
+    traveling wave from peduncle to fluke tip. Kinematic parameters from Kojeszewski &amp; Fish (2007).
+  </p>
+
+  <div class="panel">
+    <div>
+      <div class="eq">
+        <div class="eq-tag">Tail Displacement</div>
+        <div class="eq-expr">y(x, t) = A(x) &middot; sin(2&pi;ft &minus; 2&pi;x/&lambda;)</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Amplitude Envelope (Quadratic Growth)</div>
+        <div class="eq-expr">A(s) = A<sub>tip</sub> &middot; (s / L<sub>tail</sub>)&sup2;</div>
+        <div class="eq-note">
+          A/BL = 0.22 peak-to-peak (K&amp;F07). A<sub>tip</sub> = 0.275 m single-side.
+          L<sub>tail</sub> &asymp; 1.04 m (26 segments &times; 40 mm). Quadratic envelope matches biological growth.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Frequency&ndash;Speed Relationship</div>
+        <div class="eq-expr">f(U) = 0.24 + 0.22U &nbsp;&nbsp;[Hz]</div>
+        <div class="eq-note">
+          Biological cruise = 0.5 m/s &rarr; f = 0.35 Hz.
+          Design cruise = 0.8 m/s &rarr; f = 0.416 Hz, T = 2.40 s.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Wave Speed</div>
+        <div class="eq-expr">V<sub>wave</sub> = 0.51 + 1.09U &nbsp;&nbsp;[m/s]</div>
+        <div class="eq-note">Always exceeds body speed &mdash; maintaining thrust-generating phase lag.</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Segmental Peak Acceleration</div>
+        <div class="eq-expr">a(x, t) = &minus;A(x) &middot; &omega;&sup2; &middot; sin(kx &minus; &omega;t)</div>
+        <div class="eq-note">Drives inertial loads on actuators. &omega; = 2&pi;f, k = 2&pi;/&lambda;.</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Joint Angle</div>
+        <div class="eq-expr">&theta;<sub>j</sub>(t) = arctan[(&Delta;z<sub>j+1</sub> &minus; &Delta;z<sub>j</sub>) / &Delta;x<sub>j</sub>]</div>
+      </div>
+    </div>
+    <div>
+      <div class="fig" style="margin-bottom:1.5rem;">
+        <img src="dimensional_analysis/swimming_kinematics.png"
+             alt="Spine deformation over one swim cycle">
+        <div class="fig-cap">Traveling wave propagation through one complete swim cycle.</div>
+      </div>
+      <div class="fig">
+        <img src="dimensional_analysis/kinematic_deformation.png"
+             alt="Deformation envelope">
+        <div class="fig-cap">Deformation envelope showing quadratic amplitude growth along caudal spine.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-value c-accent">0.275 m</div>
+      <div class="metric-label">Fluke Tip Amplitude</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-cyan">3.32 m</div>
+      <div class="metric-label">Wavelength (cruise)</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-gold">26</div>
+      <div class="metric-label">Caudal Segments</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-green">6 per seg</div>
+      <div class="metric-label">Actuators</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-purple">Re ~ 10<sup>6</sup></div>
+      <div class="metric-label">Reynolds Number</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value c-rose">St &asymp; 0.14</div>
+      <div class="metric-label">Strouhal Number</div>
+    </div>
+  </div>
+
+  <!-- Swim animation + CFD -->
+  <div class="grid-2" style="margin-bottom:2rem;">
+    <div class="fig">
+      <img src="dimensional_analysis/BIAUV_swimming_animation.gif"
+           alt="Dorso-ventral undulation swim cycle">
+      <div class="fig-cap">
+        <strong>Swim cycle.</strong> Dorso-ventral undulation at design cruise (0.8 m/s, f &asymp; 0.42 Hz).
+      </div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/hydrodynamics/manatee_cfd_flow.png"
+           alt="CFD flow visualization">
+      <div class="fig-cap">
+        <strong>CFD flow.</strong> Velocity field, streamlines, and reverse K&aacute;rm&aacute;n vortex street.
+        Panel-method + boundary layer + Theodorsen unsteady-lift prediction.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     HYDRODYNAMIC FORCE ANALYSIS
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="hydrodynamics">
+  <div class="section-label">Fluid Dynamics</div>
+  <h2 class="section-title">Hydrodynamic Force Analysis</h2>
+  <p class="section-desc">
+    Thrust, drag, and propulsive efficiency derived from Buckingham Pi analysis,
+    elongated-body theory (Lighthill 1971), and Strouhal optimization.
+  </p>
+
+  <div class="panel" style="margin-top:3rem;">
+    <div class="panel-text">
+      <h3>Dimensionless Groups &amp; Flow Regime</h3>
+      <div class="eq">
+        <div class="eq-tag">Reynolds Number</div>
+        <div class="eq-expr">Re = &rho;UL / &mu;</div>
+        <div class="eq-note">
+          &rho; = 1025 kg/m&sup3;, &mu; = 1.08&times;10<sup>&minus;3</sup> Pa&middot;s (seawater @ 25&deg;C).
+          Re = 2.37&times;10<sup>5</sup> (0.1 m/s) &rarr; 3.57&times;10<sup>6</sup> (1.5 m/s). Turbulent regime.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Strouhal Number</div>
+        <div class="eq-expr">St = fA / U</div>
+        <div class="eq-note">
+          At cruise: St = 0.416 &times; 0.275 / 0.8 = 0.143. Below the 0.20&ndash;0.40 optimal band
+          (Taylor, Nudds &amp; Thomas 2003). Manatees are low-St swimmers.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Reduced Frequency</div>
+        <div class="eq-expr">k = &pi;fc / U</div>
+        <div class="eq-note">Quantifies unsteady effects on the fluke; c = 0.28 m (fluke chord).</div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Thrust, Drag &amp; Navier-Stokes</h3>
+      <div class="eq">
+        <div class="eq-tag">Friction Drag (ITTC 1957)</div>
+        <div class="eq-expr">F<sub>D</sub> = &frac12;&rho;U&sup2;S<sub>wet</sub>C<sub>D</sub></div>
+        <div class="eq-note">
+          C<sub>D</sub> = 0.075 / (log<sub>10</sub>Re &minus; 2)&sup2; &asymp; 0.0065 at cruise.
+          S<sub>wet</sub> = 2.2 m&sup2;. F<sub>D</sub> &asymp; 4.7 N.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Lighthill Thrust (Elongated Body Theory)</div>
+        <div class="eq-expr">T = &frac12;m<sub>a</sub>(L) &middot; w(L,t)&sup2; &minus; recoil terms</div>
+        <div class="eq-note">
+          m<sub>a</sub>(L) = &rho;&pi;b&sup2; = 340 kg/m. At cruise: T &asymp; 24.1 N vs. drag F<sub>D</sub> &asymp; 4.7 N.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Added Mass (Elliptical Cross-Section)</div>
+        <div class="eq-expr">m<sub>a</sub>(x) = &rho; &middot; &pi; &middot; b(x)&sup2;</div>
+        <div class="eq-note">b(x) = local half-height. Varies from ~0.25 m mid-body to ~0.003 m at fluke trailing edge.</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Total Bending Moment at Joint j</div>
+        <div class="eq-expr">M<sub>total,j</sub> = &sum;<sub>k=j+1</sub><sup>N</sup> (m<sub>k</sub> + m<sub>a,k</sub>) &middot; a<sub>k</sub> &middot; r<sub>jk</sub></div>
+        <div class="eq-note">Peak M<sub>total</sub> &asymp; 122.4 N&middot;m at proximal caudal joint (x = 1.456 m).</div>
+      </div>
+    </div>
+    <div>
+      <div class="fig" style="margin-bottom:1.5rem;">
+        <img src="dimensional_analysis/BIAUV_strouhal_efficiency.png"
+             alt="Strouhal sweep and efficiency">
+        <div class="fig-cap">Strouhal sweep: propulsive efficiency vs. St. Mechanatee at St &asymp; 0.14.</div>
+      </div>
+      <div class="fig">
+        <img src="dimensional_analysis/BIAUV_hydro_annotated.png"
+             alt="Annotated flow field">
+        <div class="fig-cap">Annotated flow field with thrust, drag, and reactive force components.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strouhal comparison -->
+  <div class="bleed" style="margin-top:2rem; margin-bottom:.5rem;">
+    <img src="dimensional_analysis/strouhal_vs_swimmers.png"
+         alt="Strouhal number comparison: Mechanatee vs cetaceans, fish, eels, pinnipeds">
+  </div>
+  <p style="color:var(--text-dim); font-size:.82rem; text-align:center; margin-bottom:2.5rem;">
+    <strong>Mechanatee in the swimmer design space.</strong> Operating at St &asymp; 0.14 &mdash;
+    below the canonical 0.20&ndash;0.40 efficiency band. The low-Strouhal niche of slow, quiet,
+    vegetated-water survey.
+  </p>
+
+  <!-- Force vector diagrams -->
+  <h3 style="margin-bottom:1.5rem;">Force Vector Analysis</h3>
+  <div class="grid-2">
+    <div class="fig">
+      <img src="dimensional_analysis/hydrodynamics/tailUndulationWHydroForces.png"
+           alt="Hydrodynamic forces on tail">
+      <div class="fig-cap">Distributed reactive &amp; resistive forces during dorso-ventral tail undulation.</div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/hydrodynamics/tailUndulationWForceVectors.png"
+           alt="Per-segment force vectors">
+      <div class="fig-cap">Per-segment force decomposition: inertial, pressure, and net thrust.</div>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-top:1.5rem;">
+    <div class="fig">
+      <img src="dimensional_analysis/hydrodynamics/lift_time_series.png"
+           alt="Lift force time series">
+      <div class="fig-cap">Lift generated through active fluke pitch modulation &mdash; SMA-driven real-time pitch.</div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/bending_torque_analysis.png"
+           alt="Bending moment distribution">
+      <div class="fig-cap">Total bending moment: inertial + hydrodynamic components across speed range.</div>
+    </div>
+  </div>
+
+  <!-- ─── CPG ─── -->
+  <h3 style="margin-top:4rem; margin-bottom:1rem;">Central Pattern Generator &mdash; Spinal Drive Architecture</h3>
+  <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+    The tail is driven by a network of coupled neural oscillators &mdash; not an open-loop sine wave.
+    Same architecture validated by Ijspeert et al. on Salamandra robotica, adapted for sirenian
+    dorso-ventral undulation.
+  </p>
+
+  <div class="panel">
+    <div>
+      <div class="eq">
+        <div class="eq-tag">Segmental Phase Oscillator (Ijspeert 2008)</div>
+        <div class="eq-expr">
+          &theta;&#775;<sub>i</sub> = 2&pi;&nu; + &Sigma;<sub>j</sub> w<sub>ij</sub> r<sub>j</sub> sin(&theta;<sub>j</sub> &minus; &theta;<sub>i</sub> &minus; &phi;<sub>ij</sub>)
+        </div>
+        <div class="eq-note">
+          &theta;<sub>i</sub> = phase at vertebra <em>i</em>; &nu; = global drive frequency;
+          &phi;<sub>ij</sub> = inter-segmental phase bias (sets wavelength);
+          w<sub>ij</sub> = nearest-neighbor coupling weight.
+        </div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Amplitude Dynamics</div>
+        <div class="eq-expr">
+          r&#776;<sub>i</sub> = a (a/4 (R<sub>i</sub> &minus; r<sub>i</sub>) &minus; r&#775;<sub>i</sub>)
+        </div>
+        <div class="eq-note">R<sub>i</sub> = target amplitude (sets envelope).</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Phase &rarr; Joint Angle (Antagonistic Pair)</div>
+        <div class="eq-expr">
+          &theta;<sub>joint,i</sub>(t) = r<sub>i</sub>(t) &middot; cos(&theta;<sub>i</sub>(t)) &middot; A<sub>env</sub>(s<sub>i</sub>/L<sub>tail</sub>)
+        </div>
+        <div class="eq-note">
+          Dorsal (epaxial) fires for &theta;<sub>i</sub> &isin; [&minus;&pi;/2, &pi;/2];
+          ventral (hypaxial) fires for the antagonistic half-cycle.
+        </div>
+      </div>
+
+      <h4 style="margin-top:1.5rem; margin-bottom:.75rem;">Drive-Signal &rarr; Behavior</h4>
+      <table class="dtable">
+        <thead><tr><th>Behavior</th><th>Drive</th><th>Kinematics</th></tr></thead>
+        <tbody>
+          <tr><td>Station-hold</td><td class="val">&nu;<sub>0</sub> = 0</td><td>Tail flaccid, trimmed</td></tr>
+          <tr><td>Cruise (0.8 m/s)</td><td class="val">&nu;<sub>0</sub> = 0.42 Hz</td><td>Symmetric DV, peak &eta;<sub>p</sub></td></tr>
+          <tr><td>Slow turn</td><td class="val">&Delta;&nu;<sub>L/R</sub> &ne; 0</td><td>Asymmetric amplitude</td></tr>
+          <tr><td>Surface/dive</td><td class="val">&Delta;R<sub>U/D</sub> &ne; 0</td><td>DC offset on antagonists</td></tr>
+          <tr><td>Reverse</td><td class="val">&phi;<sub>ij</sub> &rarr; &minus;&phi;<sub>ij</sub></td><td>Head-ward wave</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="fig" style="margin-bottom:1.5rem;">
+        <img src="dimensional_analysis/joint_angle_analysis.png"
+             alt="Joint angle profile — CPG output">
+        <div class="fig-cap">Phase-lagged joint-angle profile across 26 caudal segments &mdash; the kinematic output
+          of the coupled-oscillator network.</div>
+      </div>
+      <div class="callout accent" style="margin:0;">
+        <div class="callout-title">Why a CPG, Not a Lookup Table</div>
+        <p><strong>Robustness:</strong> Re-entrains to perturbations within one cycle.</p>
+        <p><strong>Smooth transitions:</strong> Cruise &rarr; sprint &rarr; station-hold &rarr; reverse
+           all expressed as drive-signal changes.</p>
+        <p><strong>Biological fidelity:</strong> Same equations describe lamprey, salamander, dogfish,
+           and (by homology) sirenian spinal locomotor networks.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── EFFICIENCY ─── -->
+  <h3 style="margin-top:4rem; margin-bottom:1.5rem;">Efficiency &amp; Cost of Transport</h3>
+
+  <div class="panel">
+    <div>
+      <div class="eq">
+        <div class="eq-tag">Froude Efficiency</div>
+        <div class="eq-expr">&eta;<sub>F</sub> = U / V<sub>wave</sub> = 0.8 / 1.382 &asymp; 0.58</div>
+      </div>
+      <div class="eq">
+        <div class="eq-tag">Cost of Transport</div>
+        <div class="eq-expr">COT = P<sub>total</sub> / (mgU) &nbsp;&nbsp;[J/(m&middot;kg)]</div>
+      </div>
+
+      <table class="dtable" style="margin-top:1.5rem;">
+        <thead><tr><th>Speed</th><th>Thrust</th><th>Power</th><th>&eta;<sub>prop</sub></th><th>COT</th></tr></thead>
+        <tbody>
+          <tr><td class="val">0.3 m/s</td><td class="val">13.2 N</td><td class="val">0.15 W</td><td class="val">0.72</td><td class="val">0.0010</td></tr>
+          <tr><td class="val">0.5 m/s</td><td class="val">17.3 N</td><td class="val">0.64 W</td><td class="val">0.75</td><td class="val">0.0026</td></tr>
+          <tr><td class="val">0.8 m/s</td><td class="val">24.1 N</td><td class="val">2.49 W</td><td class="val">0.79</td><td class="val">0.0065</td></tr>
+          <tr><td class="val">1.0 m/s</td><td class="val">29.5 N</td><td class="val">4.25 W</td><td class="val">0.81</td><td class="val">0.0100</td></tr>
+          <tr><td class="val">1.3 m/s</td><td class="val">39.0 N</td><td class="val">9.22 W</td><td class="val">0.76</td><td class="val">0.0173</td></tr>
+          <tr><td class="val">1.5 m/s</td><td class="val">45.9 N</td><td class="val">13.8 W</td><td class="val">0.73</td><td class="val">0.0231</td></tr>
+        </tbody>
+      </table>
+
+      <div class="eq" style="margin-top:1.5rem;">
+        <div class="eq-tag">8-Hour Mission Battery</div>
+        <div class="eq-expr">E = 125 W &times; 8 h = 1000 Wh &rarr; 5.0 kg Li-ion (200 Wh/kg)</div>
+      </div>
+    </div>
+    <div>
+      <div class="fig" style="margin-bottom:1.5rem;">
+        <img src="dimensional_analysis/efficiency_cost_of_transport.png"
+             alt="Efficiency and COT vs speed">
+        <div class="fig-cap">Froude efficiency and cost of transport across operating speed range.</div>
+      </div>
+      <div class="fig">
+        <img src="dimensional_analysis/BIAUV_velocity_acceleration.png"
+             alt="Velocity and acceleration profiles">
+        <div class="fig-cap">Velocity and acceleration profiles &mdash; peak &eta;<sub>p</sub> at 0.95 m/s matches biological data.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Biomimetic flow comparison -->
+  <div class="bleed" style="margin-top:2rem;">
+    <img src="dimensional_analysis/hydrodynamics/fluid_Flow_biomimetic_examples.png"
+         alt="Comparative biomimetic flow visualization across four species">
+  </div>
+  <div class="grid-2" style="margin-top:0;">
+    <div class="callout accent" style="margin:0;">
+      <div class="callout-title">CFD Quad Chart &mdash; Biomimetic Wake Comparison</div>
+      <p>
+        <strong>(a) Tuna / Thunniform:</strong> Attached boundary layer, narrow wake, high-speed cruising.<br>
+        <strong>(b) Squid / Jet:</strong> Pulsed vortex rings, high accel, low efficiency.<br>
+        <strong>(c) Whale / Cetacean fluke:</strong> Dorso-ventral pitching hydrofoil, reverse K&aacute;rm&aacute;n street.<br>
+        <strong>(d) Eel / Anguilliform:</strong> Full-body undulation with distributed thrust.<br>
+        <strong>Mechanatee operates between (a) and (c)</strong> &mdash; subcarangiform with cetacean-style fluke.
+      </p>
+    </div>
+    <div class="callout gold" style="margin:0;">
+      <div class="callout-title">The Low-Strouhal Advantage</div>
+      <p>
+        St &asymp; 0.14&ndash;0.28 vs. 0.3&ndash;0.4 for dolphins. Spatulate fluke generates thrust through
+        <strong>pitching</strong> rather than pure heaving. Quieter propulsion, less turbidity &mdash;
+        ideal for coastal/estuarine operations where the vehicle must be invisible to both
+        wildlife and instrumentation.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     DIGITAL TWIN
+     ════════════════════════════════════════════════════════════ -->
+<section class="section" id="digital-twin">
+  <div class="section-label">Interactive Models</div>
+  <h2 class="section-title">Digital Twin &amp; 3D Visualization</h2>
+  <p class="section-desc">
+    Interactive exploration of the Mechanatee musculoskeletal system &mdash; toggle individual
+    muscle groups, isolate epaxial vs. hypaxial chains, and examine vertebral geometry.
+  </p>
+
+  <div class="model-embed" style="height:700px;">
+    <iframe src="dimensional_analysis/muscle_skeleton_overlay.html"
+            title="Interactive Musculoskeletal System"
+            loading="lazy" style="height:700px;">
+    </iframe>
+  </div>
+
+  <div class="cards" style="margin-top:2rem;">
+    <div class="card" style="border-left:3px solid #ef4444;">
+      <div class="card-body">
+        <h4 style="color:#ef4444;">Epaxial System (Upstroke)</h4>
+        <p>M. longissimus dorsi: atlas to tail tip. Transversospinalis and IlT provide medial/lateral
+           dorsal force. Transmits distally through subdermal connective tissue sheath (Pabst 1996).</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #3b82f6;">
+      <div class="card-body">
+        <h4 style="color:#3b82f6;">Hypaxial System (Downstroke)</h4>
+        <p>SVL primary, with SVM, flexor haemalis (chevron bones), rectus abdominis providing ventral
+           flexion. CuT caudal mass unique to sirenians adds subcutaneous tail flexion.</p>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid #06b6d4;">
+      <div class="card-body">
+        <h4 style="color:#06b6d4;">Lateral System (Steering)</h4>
+        <p>Intertransversarius and SDL produce lateral bending for yaw control. Transverse process
+           tips provide precise slow-speed maneuvering in shallow-water environments.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="model-embed" style="margin-top:2rem;">
+    <iframe src="dimensional_analysis/BEST_overlay_manatee_wspine_fitted.html"
+            title="Interactive 3D Mechanatee with spine overlay"
+            loading="lazy">
+    </iframe>
+  </div>
+
+  <div class="grid-2" style="margin-top:2rem;">
+    <div class="fig">
+      <img src="dimensional_analysis/spine_geometry_analysis.png" alt="Spine curvature analysis">
+      <div class="fig-cap">Spine curvature &mdash; segment lengths inform inter-disk spacing and actuator mounting.</div>
+    </div>
+    <div class="fig">
+      <img src="dimensional_analysis/DA_3d_scatter_spine.png" alt="3D spine scatter">
+      <div class="fig-cap">60-point spine within mesh hull. Virtual mass coefficients from slender-body theory.</div>
+    </div>
+  </div>
+
+  <div class="cards" style="margin-top:2rem;">
+    <div class="card" style="grid-column: 1 / -1;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
+        <img src="dimensional_analysis/showcase/digital_twin_showcase.png"
+             alt="Digital twin" style="height:100%;object-fit:cover;">
+        <div class="card-body" style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;">
+          <h4 style="font-size:1.35rem;margin-bottom:1rem;">Mesh &amp; Spine Registration</h4>
+          <p style="font-size:.95rem;line-height:1.8;">
+            25,200-point triangulated exterior mesh with embedded 60-point spine centerline
+            from biological CT data. 26 caudal vertebral disks modeled as elliptical cross-sections
+            (~3.5 cm &times; 2.5 cm) in PA12 nylon, with ball-and-socket joints allowing
+            &plusmn;15&deg; dorso-ventral and &plusmn;10&deg; lateral articulation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="glow-divider">
+
+<!-- ════════════════════════════════════════════════════════════
+     REFERENCES
+     ════════════════════════════════════════════════════════════ -->
+<section class="section section-sm">
+  <div class="section-label">References &amp; Attribution</div>
+  <h2 class="section-title">Key References</h2>
+
+  <table class="dtable">
+    <tbody>
+      <tr><td>Domning (1977)</td><td class="src">"Observations on the myology of <em>Dugong dugon</em> (M&uuml;ller)." <em>Smithsonian Contributions to Zoology</em>, No. 226. Primary sirenian myology reference &mdash; 57 pp., 54 figs.</td></tr>
+      <tr><td>Murie (1872, 1880)</td><td class="src">"On the Form and Structure of the Manatee." <em>Trans. Zoological Society of London</em>. First comprehensive manatee anatomy.</td></tr>
+      <tr><td>Reidenberg (2018)</td><td class="src">"Musculature" in <em>Encyclopedia of Marine Mammals</em>, 3rd ed., pp. 622&ndash;625. Forelimb functional anatomy.</td></tr>
+      <tr><td>Kojeszewski &amp; Fish (2007)</td><td class="src">"Swimming kinematics of the Florida manatee." <em>J. Exp. Biology</em> 210, 2411&ndash;2418. All kinematic regressions.</td></tr>
+      <tr><td>Lighthill (1971)</td><td class="src">Large-amplitude elongated-body theory. Foundation for reactive thrust calculations.</td></tr>
+      <tr><td>Taylor, Nudds &amp; Thomas (2003)</td><td class="src">Flying &amp; swimming animals cruise at Strouhal tuned for high power efficiency. St = 0.20&ndash;0.40.</td></tr>
+      <tr><td>Ijspeert (2008)</td><td class="src">"Central pattern generators for locomotion control." <em>Neural Networks</em> 21(4):642&ndash;653.</td></tr>
+      <tr><td>Pabst (1996)</td><td class="src">Subdermal connective tissue sheath in cetacean and sirenian swimming mechanics.</td></tr>
+      <tr><td>Hartman (1971)</td><td class="src">"Behavior and Ecology of the Florida Manatee." Ph.D. dissertation, Cornell. Locomotor behavior baseline.</td></tr>
+      <tr><td>Slijper (1946)</td><td class="src">Comparative biologic-anatomical investigations on the vertebral column and spinal musculature of mammals.</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:3rem; margin-bottom:1rem;">Contact</h3>
+  <p style="color:var(--text-dim); font-size:.95rem;">
+    <a href="contact.html" style="color:var(--text-bright);border-bottom:1px solid var(--accent);">
+      <strong>Haylie Garman</strong></a> &mdash;
+    Principal Investigator, Marine Biologist, Data Analyst &amp; Ocean Engineer
+  </p>
+  <p style="color:var(--text-dim); font-size:.88rem; margin-top:.5rem;">
+    Sirenia Systems &middot; FIT Alumni 2025
+  </p>
+  <p style="color:var(--text-dim); font-size:.82rem; margin-top:1rem; font-style:italic;">
+    10 prototype iterations &middot; 2.5 years of hydrodynamic testing &middot; 132 modeled muscles
+  </p>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><span>Sirenia</span> Systems</div>
+      <div class="footer-text" style="margin-top:.35rem;">
+        Biomimetic Ocean Engineering &mdash; Mechanatee BIAUV
+      </div>
+    </div>
+    <div class="footer-text" style="text-align:right;">
+      Musculature: Domning (1977) &middot; Kinematics: Kojeszewski &amp; Fish (2007)<br>
+      All images from Sirenia Systems publishable assets. No external imagery.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
